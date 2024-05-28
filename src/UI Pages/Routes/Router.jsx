@@ -11,6 +11,7 @@ import TotalBooks from "../Components/TotalBooks";
 import Login from "../../Authentication/components/Login";
 import Registration from "../../Authentication/components/Registration";
 import PrivateRoute from "../../Authentication/Routes/PrivateRoute";
+import UpdateBooks from "../Components/UpdateBooks";
 
  // here router must be export for all project 
   export const router = createBrowserRouter([
@@ -47,8 +48,10 @@ import PrivateRoute from "../../Authentication/Routes/PrivateRoute";
           element: <AddBook></AddBook>
         },
         {
-          path: '/dashboard/updatebook',
-          element: <UpdateBook></UpdateBook>
+          path: '/dashboard/updatebook/:id',
+          element: <UpdateBooks></UpdateBooks>,
+          loader: ({ params }) =>
+            fetch(`http://localhost:3000/books/${params.id}`),
         },
         {
           path: '/dashboard/totalbooks',
