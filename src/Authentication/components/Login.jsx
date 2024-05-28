@@ -3,6 +3,8 @@ import login from '../../Images/login.svg'
 import SectionTitle from '../../UI Pages/Main Pages/SectionTitle';
 import SocialLogin from './SocialLogin';
 import { Link } from 'react-router-dom';
+import useAuth from '../Hooks/useAuth';
+import toast from 'react-hot-toast';
 
 const Login = () => {
 
@@ -12,7 +14,28 @@ const Login = () => {
         formState: { errors },
       } = useForm();
 
+      const { signIn } = useAuth();
       
+
+      const onSubmit = async (data) => {
+        const { email, password } = data;
+        
+        try {
+          await signIn(email, password);
+          toast.success("Successfully Login");
+          
+        } catch (error) {
+          
+          console.log(error);
+        }
+
+        const inputEmail = document.getElementById('email');
+        inputEmail.value ='';
+        const inputPassword = document.getElementById('password');
+        inputPassword.value ='';
+
+      };
+
     
       
     return (
@@ -27,7 +50,7 @@ const Login = () => {
                     <img src={login} width={500} alt='' />
                 </div>
                 <div className='mx-auto'>
-                    <form  >
+                    <form  onSubmit={handleSubmit(onSubmit)}>
                         <input type="email" name="email" placeholder='YOUR EMAIL' id='email'  className='input' 
                         {...register("email", {
                             required: true,

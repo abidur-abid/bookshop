@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import updateArticle from '../../Images/updateArticle.svg'
 import { useLoaderData } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 
 
@@ -32,7 +33,9 @@ const UpdateBooks = () => {
           body: JSON.stringify(data),
         })
           .then((res) => res.json())
-          .then((data) => console.log(data));
+          .then((data) => {
+            toast.success("Successfully updated a book Information")
+          });
       };
 
 

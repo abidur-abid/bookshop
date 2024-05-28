@@ -3,6 +3,9 @@ import registration from "../../Images/register.svg"
 import SectionTitle from "../../UI Pages/Main Pages/SectionTitle";
 import SocialLogin from './SocialLogin';
 import { Link } from 'react-router-dom';
+import useAuth from '../Hooks/useAuth';
+import { startTransition } from 'react';
+import toast from 'react-hot-toast';
 
 const Registration = () => {
     const {
@@ -10,6 +13,40 @@ const Registration = () => {
         handleSubmit,
         formState: { errors },
       } = useForm();
+
+      const { createUser, updateUserProfile, } = useAuth();
+
+    const onSubmit = async (data, event) => {
+        const { name, email, password, photo } = data;
+        try {
+          await createUser(email, password);
+          toast.success("Successfully created a new user");
+          await updateUserProfile({
+            displayName: name,
+            photoURL: photo,
+          });
+          
+          startTransition(() => {
+            refresh();
+          });
+          
+          
+        } catch (error) {
+          console.log(error);
+        }
+
+        const inputName = document.getElementById('name');
+        inputName.value ='';
+        const inputEmail = document.getElementById('email');
+        inputEmail.value ='';
+        const inputPassword = document.getElementById('password');
+        inputPassword.value ='';
+        const inputPhoto = document.getElementById('photo');
+        inputPhoto.value ='';
+        
+        
+
+      };
 
 
     return (
@@ -23,7 +60,7 @@ const Registration = () => {
                     <img src={registration} width={500} alt='Registration' />
                 </div>
                 <div className='mx-auto'>
-                    <form >
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <div>
                             <input type="text" name="name" placeholder='YOUR NAME' id='name'  className='input'
                             {...register("name", { required: true })}

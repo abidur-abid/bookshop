@@ -1,5 +1,6 @@
 import { CgProfile } from "react-icons/cg";
 import useAuth from "../../Authentication/Hooks/useAuth";
+import toast from "react-hot-toast";
 
 
 
@@ -12,6 +13,7 @@ const Profile = () => {
 
     const handleLogout = () => {
          logOut();
+         toast.success("Successfully Logout");
       };
 
     return (
